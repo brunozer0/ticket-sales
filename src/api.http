@@ -1,3 +1,5 @@
+# @name loginPartner1
+
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
@@ -7,69 +9,89 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/partners
+@tokenPartner1 = {{ loginPartner1.response.body.token }}
+
+
+# @name loginCustomer1
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "costumer1@user.com",
+    "password": "secret"
+}
+
+###
+@tokenCustomer1 = {{ loginCustomer1.response.body.token }}
+
+
+###
+POST http://localhost:3000/partners/register
 Content-Type: application/json
 
 {
     "name": "bruno",
-    "email": "partner1user.com",
+    "email": "partner1@user.com",
     "password": "secret",
     "company_name": "bruno SA"
-}   
+}
 
 ###
-POST http://localhost:3000/customers
+POST http://localhost:3000/customers/register
 Content-Type: application/json
 
 {
     "name": "bruno costumer",
-    "email": "brunocostumer2@user.com",
+    "email": "costumer1@user.com",
     "password": "secret",
     "address": "rua onze",
     "phone": "23213123123"
 }
 
 
-###
+### user create events
 POST http://localhost:3000/partners/events
 Content-Type: application/json
+Authorization: Bearer {{ tokenPartner1}}
 
 {
     "name": "event 1",
     "description": "description of event",
     "date": "2025-01-01T00:00:00",
     "location": "rua doze",
-    "address": "rua onze",
+    "address": "rua onze"
 }
 
-### partners event list 
+### partners event list
 GET  http://localhost:3000/partners/events
-Content-Type: application/json
+Authorization: Bearer {{ tokenPartner1 }}
 
 {
-    
+
 }
 ### single events partners list
-GET http://localhost:3000/partners/events/3000
+GET http://localhost:3000/partners/events/2
 Content-Type: application/json
+Authorization: Bearer {{ tokenPartner1 }}
 
 {
-    
+
 }
 
-### events list 
+### events list
 GET  http://localhost:3000/events
 Content-Type: application/json
 
 {
-    
+
 }
 ### single event list
-GET http://localhost:3000/events/3000
+GET http://localhost:3000/events/1
 Content-Type: application/json
 
 {
-    
+
 }
 
 
